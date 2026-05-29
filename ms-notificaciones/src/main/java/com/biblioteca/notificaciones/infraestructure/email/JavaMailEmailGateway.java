@@ -12,7 +12,7 @@ import java.net.http.HttpResponse;
 @Component
 public class JavaMailEmailGateway implements EmailGateway {
 
-    @Value("\")
+    @Value("${resend.api.key}")
     private String apiKey;
 
     @Override
