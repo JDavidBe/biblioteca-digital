@@ -1,0 +1,143 @@
+# render.yaml - Biblioteca Digital Microservicios
+# Despliegue en Render.com
+
+databases:
+  - name: db-biblioteca-auth
+    plan: free
+    databaseName: biblioteca_auth
+    user: bib_user
+
+  - name: db-biblioteca-usuarios
+    plan: free
+    databaseName: biblioteca_usuarios
+    user: bib_user
+
+  - name: db-biblioteca-recursos
+    plan: free
+    databaseName: biblioteca_recursos
+    user: bib_user
+
+  - name: db-biblioteca-valoraciones
+    plan: free
+    databaseName: biblioteca_valoraciones
+    user: bib_user
+
+  - name: db-biblioteca-descargas
+    plan: free
+    databaseName: biblioteca_descargas
+    user: bib_user
+
+  - name: db-biblioteca-reportes
+    plan: free
+    databaseName: biblioteca_reportes
+    user: bib_user
+
+  - name: db-biblioteca-notificaciones
+    plan: free
+    databaseName: biblioteca_notificaciones
+    user: bib_user
+
+services:
+  - type: web
+    name: ms-auth
+    runtime: docker
+    dockerfilePath: ./ms-auth/Dockerfile
+    dockerContext: ./ms-auth
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: db-biblioteca-auth
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRATION_MS
+        value: "28800000"
+
+  - type: web
+    name: ms-usuarios
+    runtime: docker
+    dockerfilePath: ./ms-usuarios/Dockerfile
+    dockerContext: ./ms-usuarios
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: db-biblioteca-usuarios
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+
+  - type: web
+    name: ms-recursos
+    runtime: docker
+    dockerfilePath: ./ms-recursos/Dockerfile
+    dockerContext: ./ms-recursos
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: db-biblioteca-recursos
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+
+  - type: web
+    name: ms-valoraciones
+    runtime: docker
+    dockerfilePath: ./ms-valoraciones/Dockerfile
+    dockerContext: ./ms-valoraciones
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: db-biblioteca-valoraciones
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+
+  - type: web
+    name: ms-descargas
+    runtime: docker
+    dockerfilePath: ./ms-descargas/Dockerfile
+    dockerContext: ./ms-descargas
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: db-biblioteca-descargas
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+
+  - type: web
+    name: ms-reportes
+    runtime: docker
+    dockerfilePath: ./ms-reportes/Dockerfile
+    dockerContext: ./ms-reportes
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: db-biblioteca-reportes
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+
+  - type: web
+    name: ms-notificaciones
+    runtime: docker
+    dockerfilePath: ./ms-notificaciones/Dockerfile
+    dockerContext: ./ms-notificaciones
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: db-biblioteca-notificaciones
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false

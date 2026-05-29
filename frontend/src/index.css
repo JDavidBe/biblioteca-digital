@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #faf6f0;
+    color: #1a1a2e;
+  }
+  h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-ink text-cream px-6 py-2.5 rounded font-medium text-sm tracking-wide hover:bg-ink-light transition-all duration-200 inline-flex items-center gap-2;
+  }
+  .btn-gold {
+    @apply bg-gold text-ink px-6 py-2.5 rounded font-medium text-sm tracking-wide hover:bg-gold-dark transition-all duration-200 inline-flex items-center gap-2;
+  }
+  .btn-ghost {
+    @apply border border-ink/20 text-ink px-6 py-2.5 rounded font-medium text-sm hover:bg-ink/5 transition-all duration-200 inline-flex items-center gap-2;
+  }
+  .card {
+    @apply bg-white border border-cream-dark rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+  .input-field {
+    @apply w-full border border-cream-dark rounded-lg px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold transition-all;
+  }
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  .page-title {
+    @apply text-3xl font-display font-bold text-ink mb-1;
+  }
+  .section-title {
+    @apply text-xl font-display font-semibold text-ink mb-4;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #faf6f0; }
+::-webkit-scrollbar-thumb { background: #e2b04a; border-radius: 3px; }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease-out both; }

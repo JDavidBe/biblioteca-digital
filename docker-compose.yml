@@ -1,0 +1,255 @@
+services:
+
+  # ─── Bases de datos ───────────────────────────────────────────────────────
+
+  postgres-auth:
+    image: postgres:16-alpine
+    container_name: postgres-auth
+    environment:
+      POSTGRES_DB: biblioteca_auth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2305
+    ports: ["5432:5432"]
+    volumes: [pgdata-auth:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d biblioteca_auth"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [biblioteca-net]
+
+  postgres-usuarios:
+    image: postgres:16-alpine
+    container_name: postgres-usuarios
+    environment:
+      POSTGRES_DB: biblioteca_usuarios
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2305
+    ports: ["5433:5432"]
+    volumes: [pgdata-usuarios:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d biblioteca_usuarios"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [biblioteca-net]
+
+  postgres-recursos:
+    image: postgres:16-alpine
+    container_name: postgres-recursos
+    environment:
+      POSTGRES_DB: biblioteca_recursos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2305
+    ports: ["5434:5432"]
+    volumes: [pgdata-recursos:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d biblioteca_recursos"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [biblioteca-net]
+
+  postgres-valoraciones:
+    image: postgres:16-alpine
+    container_name: postgres-valoraciones
+    environment:
+      POSTGRES_DB: biblioteca_valoraciones
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2305
+    ports: ["5435:5432"]
+    volumes: [pgdata-valoraciones:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d biblioteca_valoraciones"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [biblioteca-net]
+
+  postgres-descargas:
+    image: postgres:16-alpine
+    container_name: postgres-descargas
+    environment:
+      POSTGRES_DB: biblioteca_descargas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2305
+    ports: ["5436:5432"]
+    volumes: [pgdata-descargas:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d biblioteca_descargas"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [biblioteca-net]
+
+  postgres-reportes:
+    image: postgres:16-alpine
+    container_name: postgres-reportes
+    environment:
+      POSTGRES_DB: biblioteca_reportes
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2305
+    ports: ["5437:5432"]
+    volumes: [pgdata-reportes:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d biblioteca_reportes"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [biblioteca-net]
+
+  postgres-notificaciones:
+    image: postgres:16-alpine
+    container_name: postgres-notificaciones
+    environment:
+      POSTGRES_DB: biblioteca_notificaciones
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2305
+    ports: ["5438:5432"]
+    volumes: [pgdata-notificaciones:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d biblioteca_notificaciones"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [biblioteca-net]
+
+  # ─── Microservicios ────────────────────────────────────────────────────────
+
+  ms-auth:
+    build:
+      context: ./ms-auth
+      dockerfile: Dockerfile
+    container_name: ms-auth
+    ports: ["8080:8080"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-auth:5432/biblioteca_auth
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 2305
+      JWT_SECRET: BibliotecaDigital2025SecretKeyMustBe32CharsLong!!
+      JWT_EXPIRATION_MS: 28800000
+    depends_on:
+      postgres-auth:
+        condition: service_healthy
+    networks: [biblioteca-net]
+    restart: unless-stopped
+
+  ms-usuarios:
+    build:
+      context: ./ms-usuarios
+      dockerfile: Dockerfile
+    container_name: ms-usuarios
+    ports: ["8081:8081"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-usuarios:5432/biblioteca_usuarios
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 2305
+      JWT_SECRET: BibliotecaDigital2025SecretKeyMustBe32CharsLong!!
+    depends_on:
+      postgres-usuarios:
+        condition: service_healthy
+    networks: [biblioteca-net]
+    restart: unless-stopped
+
+  ms-recursos:
+    build:
+      context: ./ms-recursos
+      dockerfile: Dockerfile
+    container_name: ms-recursos
+    ports: ["8082:8082"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-recursos:5432/biblioteca_recursos
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 2305
+      JWT_SECRET: BibliotecaDigital2025SecretKeyMustBe32CharsLong!!
+    volumes:
+      - recursos-uploads:/app/uploads
+    depends_on:
+      postgres-recursos:
+        condition: service_healthy
+    networks: [biblioteca-net]
+    restart: unless-stopped
+
+  ms-valoraciones:
+    build:
+      context: ./ms-valoraciones
+      dockerfile: Dockerfile
+    container_name: ms-valoraciones
+    ports: ["8083:8083"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-valoraciones:5432/biblioteca_valoraciones
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 2305
+      JWT_SECRET: BibliotecaDigital2025SecretKeyMustBe32CharsLong!!
+    depends_on:
+      postgres-valoraciones:
+        condition: service_healthy
+    networks: [biblioteca-net]
+    restart: unless-stopped
+
+  ms-descargas:
+    build:
+      context: ./ms-descargas
+      dockerfile: Dockerfile
+    container_name: ms-descargas
+    ports: ["8084:8084"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-descargas:5432/biblioteca_descargas
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 2305
+      JWT_SECRET: BibliotecaDigital2025SecretKeyMustBe32CharsLong!!
+    depends_on:
+      postgres-descargas:
+        condition: service_healthy
+    networks: [biblioteca-net]
+    restart: unless-stopped
+
+  ms-reportes:
+    build:
+      context: ./ms-reportes
+      dockerfile: Dockerfile
+    container_name: ms-reportes
+    ports: ["8085:8085"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-reportes:5432/biblioteca_reportes
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 2305
+      JWT_SECRET: BibliotecaDigital2025SecretKeyMustBe32CharsLong!!
+    depends_on:
+      postgres-reportes:
+        condition: service_healthy
+    networks: [biblioteca-net]
+    restart: unless-stopped
+
+  ms-notificaciones:
+    build:
+      context: ./ms-notificaciones
+      dockerfile: Dockerfile
+    container_name: ms-notificaciones
+    ports: ["8086:8086"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-notificaciones:5432/biblioteca_notificaciones
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 2305
+      JWT_SECRET: BibliotecaDigital2025SecretKeyMustBe32CharsLong!!
+      MAIL_USERNAME: johanstevenalvarezrodriguez@gmail.com
+      MAIL_PASSWORD: useyflvfkgngxrdc
+    depends_on:
+      postgres-notificaciones:
+        condition: service_healthy
+    networks: [biblioteca-net]
+    restart: unless-stopped
+
+networks:
+  biblioteca-net:
+    driver: bridge
+
+volumes:
+  pgdata-auth:
+  pgdata-usuarios:
+  pgdata-recursos:
+  pgdata-valoraciones:
+  pgdata-descargas:
+  pgdata-reportes:
+  pgdata-notificaciones:
+  recursos-uploads:

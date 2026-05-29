@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: ms-descargas
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/biblioteca_descargas}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:2305}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: ${PORT:8084}
+jwt:
+  secret: ${JWT_SECRET:BibliotecaDigital2025SecretKeyMustBe32CharsLong!!}
+  expiration-ms: ${JWT_EXPIRATION_MS:28800000}
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
