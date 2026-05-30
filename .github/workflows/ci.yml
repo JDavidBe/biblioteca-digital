@@ -18,7 +18,12 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v3
+      - name: Reparar gradle wrapper
+        run: |
+          curl -L https://services.gradle.org/distributions/gradle-8.5-bin.zip -o gradle.zip
+          unzip -q gradle.zip
+          ./gradle-8.5/bin/gradle wrapper
+          rm -rf gradle-8.5 gradle.zip
       - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
@@ -39,7 +44,12 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v3
+      - name: Reparar gradle wrapper
+        run: |
+          curl -L https://services.gradle.org/distributions/gradle-8.5-bin.zip -o gradle.zip
+          unzip -q gradle.zip
+          ./gradle-8.5/bin/gradle wrapper
+          rm -rf gradle-8.5 gradle.zip
       - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
@@ -60,7 +70,12 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v3
+      - name: Reparar gradle wrapper
+        run: |
+          curl -L https://services.gradle.org/distributions/gradle-8.5-bin.zip -o gradle.zip
+          unzip -q gradle.zip
+          ./gradle-8.5/bin/gradle wrapper
+          rm -rf gradle-8.5 gradle.zip
       - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
@@ -81,7 +96,12 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v3
+      - name: Reparar gradle wrapper
+        run: |
+          curl -L https://services.gradle.org/distributions/gradle-8.5-bin.zip -o gradle.zip
+          unzip -q gradle.zip
+          ./gradle-8.5/bin/gradle wrapper
+          rm -rf gradle-8.5 gradle.zip
       - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
@@ -102,7 +122,12 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v3
+      - name: Reparar gradle wrapper
+        run: |
+          curl -L https://services.gradle.org/distributions/gradle-8.5-bin.zip -o gradle.zip
+          unzip -q gradle.zip
+          ./gradle-8.5/bin/gradle wrapper
+          rm -rf gradle-8.5 gradle.zip
       - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
@@ -123,7 +148,12 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v3
+      - name: Reparar gradle wrapper
+        run: |
+          curl -L https://services.gradle.org/distributions/gradle-8.5-bin.zip -o gradle.zip
+          unzip -q gradle.zip
+          ./gradle-8.5/bin/gradle wrapper
+          rm -rf gradle-8.5 gradle.zip
       - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
@@ -144,7 +174,12 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v3
+      - name: Reparar gradle wrapper
+        run: |
+          curl -L https://services.gradle.org/distributions/gradle-8.5-bin.zip -o gradle.zip
+          unzip -q gradle.zip
+          ./gradle-8.5/bin/gradle wrapper
+          rm -rf gradle-8.5 gradle.zip
       - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
