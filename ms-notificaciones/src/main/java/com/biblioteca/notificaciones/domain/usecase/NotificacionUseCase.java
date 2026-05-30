@@ -31,7 +31,7 @@ public class NotificacionUseCase {
         }
         if (necesitaSms) {
             if (notificacion.getDestinatarioTelefono() == null || notificacion.getDestinatarioTelefono().isBlank())
-                throw new RuntimeException("El teléfono del destinatario es obligatorio para canal SMS");
+                throw new RuntimeException("El telefono del destinatario es obligatorio para canal SMS");
         }
         if (notificacion.getMensaje() == null || notificacion.getMensaje().isBlank())
             throw new RuntimeException("El mensaje es obligatorio");
@@ -51,7 +51,7 @@ public class NotificacionUseCase {
                 guardada.setEnviada(true);
                 guardada.setEnviadaEn(LocalDateTime.now());
             } catch (Exception e) {
-                // guardada pero no enviada — reintentable
+           
             }
         }
 
@@ -62,7 +62,6 @@ public class NotificacionUseCase {
                 guardada.setEnviadaSms(true);
                 if (guardada.getEnviadaEn() == null) guardada.setEnviadaEn(LocalDateTime.now());
             } catch (Exception e) {
-                // guardada pero SMS no enviado — reintentable
             }
         }
 
@@ -71,7 +70,7 @@ public class NotificacionUseCase {
 
     public Notificacion enviarBienvenida(String correo, String telefono, Long usuarioId, String nombre) {
         if ((correo == null || correo.isBlank()) && (telefono == null || telefono.isBlank()))
-            throw new RuntimeException("Se requiere correo o teléfono para bienvenida");
+            throw new RuntimeException("Se requiere correo o telefono para bienvenida");
 
         Notificacion n = new Notificacion();
         n.setDestinatarioCorreo(correo);
@@ -79,16 +78,15 @@ public class NotificacionUseCase {
         n.setDestinatarioId(usuarioId);
         n.setTipo("BIENVENIDA");
         n.setCanal(resolverCanal(correo, telefono));
-        n.setAsunto("¡Bienvenido a Biblioteca Digital!");
+        n.setAsunto("Bienvenido a Biblioteca Digital");
         n.setMensaje(String.format(
-                "Hola %s, tu cuenta ha sido creada exitosamente. " +
-                "Ya puedes acceder a todos los recursos educativos disponibles.", nombre));
+                "Hola %s, tu cuenta fue creada. Ya puedes acceder a los recursos educativos.", nombre));
         return enviarNotificacion(n);
     }
 
     public Notificacion notificarNuevoRecurso(String correo, String telefono, Long usuarioId, String tituloRecurso) {
         if (tituloRecurso == null || tituloRecurso.isBlank())
-            throw new RuntimeException("El título del recurso es obligatorio");
+            throw new RuntimeException("El titulo del recurso es obligatorio");
 
         Notificacion n = new Notificacion();
         n.setDestinatarioCorreo(correo);
@@ -96,10 +94,9 @@ public class NotificacionUseCase {
         n.setDestinatarioId(usuarioId);
         n.setTipo("NUEVO_RECURSO");
         n.setCanal(resolverCanal(correo, telefono));
-        n.setAsunto("Nuevo recurso disponible: " + tituloRecurso);
+        n.setAsunto("Nuevo recurso: " + tituloRecurso);
         n.setMensaje(String.format(
-                "Se ha publicado un nuevo recurso educativo: \"%s\". " +
-                "Ya está disponible para descargar en la plataforma.", tituloRecurso));
+                "Nuevo recurso publicado: %s. Ya disponible en la plataforma.", tituloRecurso));
         return enviarNotificacion(n);
     }
 
@@ -110,9 +107,9 @@ public class NotificacionUseCase {
         n.setDestinatarioId(usuarioId);
         n.setTipo("NUEVA_DESCARGA");
         n.setCanal(resolverCanal(correo, telefono));
-        n.setAsunto("Confirmación de descarga");
+        n.setAsunto("Descarga registrada");
         n.setMensaje(String.format(
-                "Tu descarga del recurso \"%s\" fue registrada exitosamente.", tituloRecurso));
+                "Descarga registrada: %s", tituloRecurso));
         return enviarNotificacion(n);
     }
 
@@ -133,7 +130,7 @@ public class NotificacionUseCase {
     public Notificacion obtenerPorId(Long id) {
         Notificacion n = notificacionGateway.buscarPorId(id);
         if (n == null)
-            throw new RuntimeException("No existe notificación con id: " + id);
+            throw new RuntimeException("No existe notificacion con id: " + id);
         return n;
     }
 
