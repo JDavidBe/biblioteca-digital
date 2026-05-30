@@ -8,6 +8,9 @@ function tipoIcon(tipo) {
   return { PDF: '📄', VIDEO: '🎬', ARTICULO: '📰', LIBRO: '📖', PRESENTACION: '📊', OTRO: '📎' }[tipo] || '📎'
 }
 
+const ADMIN1 = { correo: 'jdavidbernalb@gmail.com', telefono: '+573506595077' }
+const ADMIN2 = { correo: 'johanstevenalvarezrodriguez@gmail.com', telefono: '+573132923653' }
+
 export default function RecursoDetallePage() {
   const { id }         = useParams()
   const { usuario, esAdmin } = useAuth()
@@ -47,6 +50,17 @@ export default function RecursoDetallePage() {
 
   useEffect(() => () => { if (pdfUrl) URL.revokeObjectURL(pdfUrl) }, [pdfUrl])
 
+  const notificarAdmins = (tituloRecurso) => {
+    ;[ADMIN1, ADMIN2].forEach(admin => {
+      notificacionesApi.descarga({
+        correo:        admin.correo,
+        telefono:      admin.telefono,
+        usuarioId:     usuario?.id || 0,
+        tituloRecurso,
+      }).catch(() => {})
+    })
+  }
+
   const registrarDescarga = async () => {
     await descargasApi.registrar({
       recursoId:     Number(id),
@@ -54,12 +68,7 @@ export default function RecursoDetallePage() {
       usuarioCorreo: usuario?.correo,
       tituloRecurso: recurso?.titulo,
     }).catch(() => {})
-    notificacionesApi.descarga({
-      correo:        'jdavidbernalb@gmail.com',
-      telefono:      '+573506595077',
-      usuarioId:     usuario?.id || 0,
-      tituloRecurso: (usuario?.correo || 'alguien') + ' descargó: ' + recurso?.titulo,
-    }).catch(() => {})
+    notificarAdmins((usuario?.correo || 'alguien') + ' descargo: ' + recurso?.titulo)
     reportesApi.registrar({
       tipoEvento:    'DESCARGA',
       entidadId:     Number(id),
@@ -109,13 +118,14 @@ export default function RecursoDetallePage() {
         puntuacion,
         comentario,
       })
+      notificarAdmins((usuario?.correo || 'alguien') + ' valoro con ' + puntuacion + ' estrellas: ' + recurso?.titulo)
       reportesApi.registrar({
         tipoEvento:    'VALORACION',
         entidadId:     Number(id),
         entidadTipo:   'RECURSO',
         usuarioId:     usuario?.id || 0,
         usuarioCorreo: usuario?.correo,
-        detalle:       `Valoración de ${puntuacion} estrellas al recurso: ${recurso?.titulo}`,
+        detalle:       `Valoracion de ${puntuacion} estrellas al recurso: ${recurso?.titulo}`,
       }).catch(() => {})
       const { data } = await valoracionesApi.resumen(id)
       setResumen(data?.datos)
@@ -258,4 +268,3 @@ export default function RecursoDetallePage() {
     </div>
   )
 }
-
