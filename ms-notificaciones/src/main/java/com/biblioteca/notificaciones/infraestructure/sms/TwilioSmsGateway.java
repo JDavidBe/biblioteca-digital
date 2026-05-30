@@ -28,8 +28,8 @@ public class TwilioSmsGateway implements SmsGateway {
     @Override
     public void enviar(String destinatario, String mensaje) {
         Message.creator(
-                new PhoneNumber(destinatario),
-                new PhoneNumber(twilioNumber),
+                new PhoneNumber("whatsapp:" + destinatario),
+                new PhoneNumber("whatsapp:+14155238886"),
                 mensaje
         ).create();
     }
