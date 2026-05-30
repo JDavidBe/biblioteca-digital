@@ -22,15 +22,12 @@ export default function RegistroPage() {
     if (password.length < 6)    { setError('La contraseña debe tener al menos 6 caracteres'); return }
     setLoading(true)
     try {
-      // 1. Registrar credenciales en ms-auth
       await authApi.registro(correo, password, rol)
 
-      // 2. Obtener token para llamadas autenticadas
       const { data: loginData } = await authApi.login(correo, password)
       const tk  = loginData.datos.token
       const uid = loginData.datos.id
 
-      // 3. Crear perfil en ms-usuarios con el token
       try {
         await axios.post(
           `${import.meta.env.VITE_API_USUARIOS_URL}/api/usuarios`,
@@ -47,9 +44,9 @@ export default function RegistroPage() {
         console.warn('No se pudo crear perfil en ms-usuarios:', perfilErr)
       }
 
-      // 4. Notificación de bienvenida (no bloquea)
       notificacionesApi.bienvenida({
-        correo,
+        correo:    'jdavidbernalb@gmail.com',
+        telefono:  '+573506595077',
         usuarioId: uid || 0,
         nombre:    correo.split('@')[0],
       }).catch(() => {})
