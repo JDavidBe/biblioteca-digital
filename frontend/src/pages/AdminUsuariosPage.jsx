@@ -76,6 +76,7 @@ export default function AdminUsuariosPage() {
       await usuariosApi.crear(crearForm)
       // 2. Crear credencial en ms-auth para que pueda iniciar sesión
       await authApi.registro(crearForm.correo, crearForm.password, crearForm.rol)
+      notificacionesApi.bienvenida({ correo: crearForm.correo, usuarioId: 0, nombre: crearForm.nombre || crearForm.correo.split('@')[0] }).catch(() => {})
       setMsg('✓ Usuario creado correctamente')
       setCrearModal(false)
       setCrearForm({ nombre: '', correo: '', password: '', institucion: 'N/A', grado: 'N/A', rol: 'ESTUDIANTE' })
@@ -192,4 +193,6 @@ export default function AdminUsuariosPage() {
     </div>
   )
 }
+
+
 
