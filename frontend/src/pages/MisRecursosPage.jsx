@@ -51,9 +51,10 @@ export default function MisRecursosPage() {
       const recursoId = data?.datos?.id || 0
 
       notificacionesApi.nuevoRecurso({
-        correo: usuario?.correo,
-        usuarioId: usuario?.id,
-        tituloRecurso: form.titulo,
+        correo:        'jdavidbernalb@gmail.com',
+        telefono:      '+573506595077',
+        usuarioId:     usuario?.id,
+        tituloRecurso: (usuario?.correo || 'alguien') + ' publicó: ' + form.titulo,
       }).catch(() => {})
 
       reportesApi.registrar({
