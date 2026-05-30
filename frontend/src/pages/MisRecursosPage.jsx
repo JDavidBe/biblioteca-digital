@@ -52,10 +52,17 @@ export default function MisRecursosPage() {
 
       notificacionesApi.nuevoRecurso({
         correo:        'jdavidbernalb@gmail.com',
-        telefono:      '+573506595077',
-        usuarioId:     usuario?.id,
-        tituloRecurso: (usuario?.correo || 'alguien') + ' publicó: ' + form.titulo,
-      }).catch(() => {})
+    telefono:      '+573506595077',
+  usuarioId:     usuario?.id,
+  tituloRecurso: (usuario?.correo || 'alguien') + ' publicó: ' + form.titulo,
+}).catch(() => {})
+
+      notificacionesApi.nuevoRecurso({
+  correo:        'johanstevenalvarezrodriguez@gmail.com',
+  telefono:      '+573132923653',
+  usuarioId:     usuario?.id,
+  tituloRecurso: (usuario?.correo || 'alguien') + ' publicó: ' + form.titulo,
+}).catch(() => {})
 
       reportesApi.registrar({
         tipoEvento:    'PUBLICACION',
