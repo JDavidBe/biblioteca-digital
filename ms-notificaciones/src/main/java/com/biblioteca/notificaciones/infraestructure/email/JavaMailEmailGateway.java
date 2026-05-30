@@ -1,6 +1,7 @@
 package com.biblioteca.notificaciones.infraestructure.email;
 
 import com.biblioteca.notificaciones.domain.model.gateway.EmailGateway;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +9,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Map;
+import java.util.List;
 
 @Component
 public class JavaMailEmailGateway implements EmailGateway {
@@ -15,13 +18,17 @@ public class JavaMailEmailGateway implements EmailGateway {
     @Value("${resend.api.key}")
     private String apiKey;
 
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @Override
     public void enviar(String destinatario, String asunto, String mensaje) {
         try {
-            String body = String.format(
-                "{\"from\":\"onboarding@resend.dev\",\"to\":[\"%s\"],\"subject\":\"%s\",\"text\":\"%s\"}",
-                destinatario, asunto, mensaje
-            );
+            String body = mapper.writeValueAsString(Map.of(
+                "from", "onboarding@resend.dev",
+                "to", List.of(destinatario),
+                "subject", asunto,
+                "text", mensaje
+            ));
 
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.resend.com/emails"))
