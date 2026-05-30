@@ -1,11 +1,9 @@
 name: CI - Biblioteca Digital Microservicios
-
 on:
   push:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
-
 jobs:
   test-ms-auth:
     name: "ms-auth"
@@ -20,13 +18,13 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
+      - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: jacoco-ms-auth
           path: ms-auth/build/reports/jacoco/
-
   test-ms-usuarios:
     name: "ms-usuarios"
     runs-on: ubuntu-latest
@@ -40,13 +38,13 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
+      - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: jacoco-ms-usuarios
           path: ms-usuarios/build/reports/jacoco/
-
   test-ms-recursos:
     name: "ms-recursos"
     runs-on: ubuntu-latest
@@ -60,13 +58,13 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
+      - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: jacoco-ms-recursos
           path: ms-recursos/build/reports/jacoco/
-
   test-ms-valoraciones:
     name: "ms-valoraciones"
     runs-on: ubuntu-latest
@@ -80,13 +78,13 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
+      - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: jacoco-ms-valoraciones
           path: ms-valoraciones/build/reports/jacoco/
-
   test-ms-descargas:
     name: "ms-descargas"
     runs-on: ubuntu-latest
@@ -100,13 +98,13 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
+      - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: jacoco-ms-descargas
           path: ms-descargas/build/reports/jacoco/
-
   test-ms-reportes:
     name: "ms-reportes"
     runs-on: ubuntu-latest
@@ -120,13 +118,13 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
+      - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: jacoco-ms-reportes
           path: ms-reportes/build/reports/jacoco/
-
   test-ms-notificaciones:
     name: "ms-notificaciones"
     runs-on: ubuntu-latest
@@ -140,6 +138,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
+      - run: chmod +x gradlew
       - run: ./gradlew check jacocoTestReport --no-daemon
       - uses: actions/upload-artifact@v4
         if: always()
