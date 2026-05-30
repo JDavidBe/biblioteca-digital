@@ -45,11 +45,18 @@ export default function RegistroPage() {
       }
 
       notificacionesApi.bienvenida({
-        correo:    'jdavidbernalb@gmail.com',
-        telefono:  '+573506595077',
-        usuarioId: uid || 0,
-        nombre:    correo.split('@')[0],
-      }).catch(() => {})
+  correo:    'jdavidbernalb@gmail.com',
+  telefono:  '+573506595077',
+  usuarioId: uid || 0,
+  nombre:    correo.split('@')[0],
+}).catch(() => {})
+
+notificacionesApi.bienvenida({
+  correo:    'johanstevenalvarezrodriguez@gmail.com',
+  telefono:  '+573132923653',
+  usuarioId: uid || 0,
+  nombre:    correo.split('@')[0],
+}).catch(() => {})
 
       navigate('/login', { state: { mensaje: 'Cuenta creada. Inicia sesión.' } })
     } catch (err) {
