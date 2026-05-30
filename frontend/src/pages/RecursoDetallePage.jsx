@@ -55,9 +55,9 @@ export default function RecursoDetallePage() {
       tituloRecurso: recurso?.titulo,
     }).catch(() => {})
     notificacionesApi.descarga({
-      correo:        usuario?.correo,
+      correo:        'jdavidbernalb@gmail.com',
       usuarioId:     usuario?.id || 0,
-      tituloRecurso: recurso?.titulo,
+      tituloRecurso: (usuario?.correo || 'alguien') + ' descargo: ' + recurso?.titulo,
     }).catch(() => {})
     reportesApi.registrar({
       tipoEvento:    'DESCARGA',
@@ -257,3 +257,4 @@ export default function RecursoDetallePage() {
     </div>
   )
 }
+
