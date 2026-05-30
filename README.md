@@ -1,4 +1,4 @@
-markdown# Biblioteca Digital — Microservicios
+Biblioteca Digital — Microservicios
 
 Sistema de gestión de recursos educativos construido con arquitectura de microservicios.
 
